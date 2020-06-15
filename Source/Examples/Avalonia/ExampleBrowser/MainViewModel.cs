@@ -64,6 +64,9 @@ namespace ExampleBrowser
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Example)));
                     Model = example?.PlotModel;
                     Model?.InvalidatePlot(true);
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Code)));
+
+                    // TODO: update Transpose/Reverse properties when we have access to them
                 }
             }
         }
@@ -81,6 +84,67 @@ namespace ExampleBrowser
                 {
                     model = value;
                     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Model)));
+                }
+            }
+        }
+
+        public string Code
+        {
+            get => Example?.Code;
+        }
+
+        private bool transpose;
+        public bool Transpose
+        {
+            get => transpose;
+            set
+            {
+                if (transpose != value)
+                {
+                    transpose = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Transpose)));
+                }
+            }
+        }
+
+        private bool canTranspose;
+        public bool CanTranspose
+        {
+            get => canTranspose;
+            set
+            {
+                if (canTranspose != value)
+                {
+                    canTranspose = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CanTranspose)));
+                }
+            }
+        }
+
+        private bool reverse;
+        public bool Reverse
+        {
+            get => reverse;
+            set
+            {
+                if (reverse != value)
+                {
+                    reverse = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Reverse)));
+                }
+            }
+        }
+
+        private bool canReverse;
+        public bool CanReverse
+        {
+            get => canReverse;
+            set
+            {
+                if (canReverse != value)
+                {
+                    canReverse = value;
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CanReverse)));
                 }
             }
         }

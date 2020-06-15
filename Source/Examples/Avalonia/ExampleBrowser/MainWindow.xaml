@@ -10,22 +10,54 @@
     <Window.DataContext>
       <exampleBrowser:MainViewModel />
     </Window.DataContext>
-  
+
+    <Window.Styles>
+      <Style Selector="TextBlock">
+        <Setter Property="Margin" Value="2" />
+      </Style>
+      <Style Selector="TextBox">
+        <Setter Property="BorderThickness" Value="0" />
+      </Style>
+      <Style Selector="CheckBox">
+        <Setter Property="Margin" Value="2" />
+      </Style>
+      <Style Selector="TabControl">
+        <Setter Property="Background" Value="LightGray" />
+      </Style>
+      <Style Selector="TabControl[TabStripPlacement=Bottom]">
+        <!-- Override styled behaviour -->
+        <Setter Property="Padding" Value="0"/>
+      </Style>
+      <Style Selector="TabItem">
+        <Setter Property="Background" Value="LightGray" />
+        <Setter Property="Padding" Value="2,0" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="BorderBrush" Value="Gray" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+      </Style>
+      <Style Selector="TabItem:selected">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="Padding" Value="3,1" />
+        <Setter Property="BorderThickness" Value="1,0,1,1" />
+      </Style>
+    </Window.Styles>
+
     <Grid>
       <Grid.RowDefinitions>
         <RowDefinition Height="1*" />
       </Grid.RowDefinitions>
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="1*" />
+        <ColumnDefinition Width="Auto"/>
         <ColumnDefinition Width="2*" />
       </Grid.ColumnDefinitions>
       
-        <!-- The OxyPlot control is binding to a PlotModel in the MainViewModel -->
       <ScrollViewer>
         <ItemsControl Items="{Binding Categories}" Padding="0">
           <ItemsControl.DataTemplates>
             <DataTemplate>
-              <Expander Margin="0" Focusable="False">
+              <Expander Margin="0">
                 <Expander.Header>
                   <TextBlock Text="{Binding Key}" DockPanel.Dock="Top"  Margin="0" />
                 </Expander.Header>
@@ -41,6 +73,25 @@
           </ItemsControl.DataTemplates>
         </ItemsControl>
       </ScrollViewer>
-      <oxy:PlotView Model="{Binding Model}" Grid.Row="0" Grid.Column="1" />
+      
+      <GridSplitter Grid.Column="1" />
+      
+      <Panel Grid.Column="2" >
+        <TabControl TabStripPlacement="Bottom">
+          <TabControl.Items>
+            <TabItem Header="Plot">
+              <oxy:PlotView Model="{Binding Model}" VerticalAlignment="Stretch" />
+            </TabItem>
+            <TabItem Header="Code">
+              <TextBox Text="{Binding Code, Mode=OneWay}" IsReadOnly="True" />
+            </TabItem>
+          </TabControl.Items>
+        </TabControl>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+          <!-- TODO: make these visible when the ViewModel is finished -->
+          <CheckBox IsVisible="False" IsChecked="{Binding Transpose}" IsEnabled="{Binding CanTranspose}">Transpose</CheckBox>
+          <CheckBox IsVisible="False" IsChecked="{Binding Reverse}" IsEnabled="{Binding Reverse}">Reverse</CheckBox>
+        </StackPanel>
+      </Panel>
     </Grid>
 </Window>
