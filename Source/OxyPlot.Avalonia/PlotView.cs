@@ -28,6 +28,11 @@ namespace OxyPlot.Avalonia
         public static readonly StyledProperty<PlotModel> ModelProperty = AvaloniaProperty.Register<PlotView, PlotModel>(nameof(Model), null);
 
         /// <summary>
+        /// Identifies the <see cref="UseImmediateModeRenderer"/> dependency property.
+        /// </summary>
+        public static readonly StyledProperty<bool> UseImmediateModeRendererProperty = AvaloniaProperty.Register<PlotView, bool>(nameof(UseImmediateModeRenderer), false);
+
+        /// <summary>
         /// The model lock.
         /// </summary>
         private readonly object modelLock = new object();
@@ -49,6 +54,7 @@ namespace OxyPlot.Avalonia
         {
             PaddingProperty.OverrideMetadata(typeof(PlotView), new StyledPropertyMetadata<Thickness>(new Thickness(8)));
             ModelProperty.Changed.AddClassHandler<PlotView>(ModelChanged);
+            UseImmediateModeRendererProperty.Changed.AddClassHandler<PlotView>(UseImmediateModeRendererChanged);
             PaddingProperty.Changed.AddClassHandler<PlotView>(AppearanceChanged);
         }
 
@@ -83,6 +89,22 @@ namespace OxyPlot.Avalonia
             set
             {
                 SetValue(ControllerProperty, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use the immediate mode renderer.
+        /// </summary>
+        public bool UseImmediateModeRenderer
+        {
+            get
+            {
+                return GetValue(UseImmediateModeRendererProperty);
+            }
+
+            set
+            {
+                SetValue(UseImmediateModeRendererProperty, value);
             }
         }
 
@@ -136,6 +158,18 @@ namespace OxyPlot.Avalonia
         private static void ModelChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
         {
             ((PlotView)d).OnModelChanged();
+        }
+
+
+        /// <summary>
+        /// Called when the UseImmediateModeRendererChanged property is changed.
+        /// </summary>
+        /// <param name="d">The sender.</param>
+        /// <param name="e">The <see cref="AvaloniaPropertyChangedEventArgs" /> instance containing the event data.</param>
+        private static void UseImmediateModeRendererChanged(AvaloniaObject d, AvaloniaPropertyChangedEventArgs e)
+        {
+            ((PlotView)d).useImmediateModeRenderer = ((PlotView)d).UseImmediateModeRenderer;
+            ((PlotView)d).OnModelChanged(); // TODO: do something less dramatic
         }
 
         /// <summary>

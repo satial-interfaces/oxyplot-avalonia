@@ -2,7 +2,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Logging.Serilog;
 using Avalonia.Markup.Xaml;
 using Serilog;
 using OxyPlot.Avalonia;
@@ -42,18 +41,12 @@ namespace MemoryTest
         public static void AttachDevTools(Window window)
         {
 #if DEBUG
-			DevToolsExtensions.AttachDevTools(window);
+			//DevToolsExtensions.AttachDevTools(window);
 #endif
         }
 
         private static void InitializeLogging()
         {
-#if DEBUG
-            SerilogLogger.Initialize(new LoggerConfiguration()
-                .MinimumLevel.Warning()
-                .WriteTo.Trace(outputTemplate: "{Area}: {Message}")
-                .CreateLogger());
-#endif
         }
     }
 }

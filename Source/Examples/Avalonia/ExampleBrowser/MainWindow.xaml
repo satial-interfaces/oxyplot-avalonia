@@ -80,7 +80,7 @@
         <TabControl TabStripPlacement="Bottom">
           <TabControl.Items>
             <TabItem Header="Plot">
-              <oxy:PlotView Model="{Binding Model}" VerticalAlignment="Stretch" />
+              <oxy:PlotView Model="{Binding Model}" VerticalAlignment="Stretch" x:Name="View" />
             </TabItem>
             <TabItem Header="Code">
               <TextBox Text="{Binding Code, Mode=OneWay}" IsReadOnly="True" />
@@ -91,6 +91,7 @@
           <!-- TODO: make these visible when the ViewModel is finished -->
           <CheckBox IsVisible="False" IsChecked="{Binding Transpose}" IsEnabled="{Binding CanTranspose}">Transpose</CheckBox>
           <CheckBox IsVisible="False" IsChecked="{Binding Reverse}" IsEnabled="{Binding Reverse}">Reverse</CheckBox>
+          <CheckBox IsVisible="True" IsChecked="{Binding #View.UseImmediateModeRenderer}">Immediate Mode</CheckBox>
         </StackPanel>
       </Panel>
     </Grid>

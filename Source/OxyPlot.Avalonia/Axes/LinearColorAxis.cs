@@ -41,14 +41,14 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Identifies the <see cref="PaletteSizeProperty"/> dependency property.
         /// </summary>
-        public static readonly StyledProperty<int> PaletteSizeProperty = AvaloniaProperty.Register<LinearColorAxis, int>(nameof(PaletteSize), 20, validate: (obj, val) =>
+        public static readonly StyledProperty<int> PaletteSizeProperty = AvaloniaProperty.Register<LinearColorAxis, int>(nameof(PaletteSize), 20, validate: val =>
         {
             if (!ValidatePaletteSize(val))
             {
                 throw new System.ArgumentException();
             }
 
-            return val;
+            return true;
         });
 
         /// <summary>

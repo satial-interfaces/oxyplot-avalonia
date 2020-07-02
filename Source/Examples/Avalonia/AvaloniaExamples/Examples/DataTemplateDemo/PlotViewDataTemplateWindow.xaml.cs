@@ -35,7 +35,7 @@ namespace AvaloniaExamples.Examples.DataTemplateDemo
             this.DataTemplates.Add(new FuncDataTemplate<Model>((model, _) => new OxyPlot.Avalonia.PlotView
             {
                 [!!OxyPlot.Avalonia.PlotView.ModelProperty] = new Binding(nameof(Model.PlotModel)),
-                [!!OxyPlot.Avalonia.PlotView.ControllerProperty] = new Binding(nameof(Model.PlotController)) 
+                [!!OxyPlot.Avalonia.PlotView.ControllerProperty] = new Binding(nameof(Model.PlotController))
             }));
 
         }

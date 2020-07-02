@@ -11,6 +11,7 @@ using Avalonia.Media;
 
 namespace OxyPlot.Avalonia
 {
+    using global::Avalonia.Animation.Animators;
     using global::Avalonia;
     using global::Avalonia.Controls;
     using global::Avalonia.Controls.Presenters;
@@ -49,6 +50,16 @@ namespace OxyPlot.Avalonia
         /// The canvas.
         /// </summary>
         private Canvas canvas;
+
+        /// <summary>
+        /// The canvas.
+        /// </summary>
+        private ImmediateModePlotControl immediateModePlotControl;
+
+        /// <summary>
+        /// Whether to use the immediate mode renderer.
+        /// </summary>
+        protected bool useImmediateModeRenderer = false;
 
         /// <summary>
         /// The current tracker.
@@ -271,6 +282,11 @@ namespace OxyPlot.Avalonia
             canvas = new Canvas();
             panel.Children.Add(canvas);
             renderContext = new CanvasRenderContext(canvas);
+
+            immediateModePlotControl = new ImmediateModePlotControl();
+            immediateModePlotControl.HorizontalAlignment = global::Avalonia.Layout.HorizontalAlignment.Stretch;
+            immediateModePlotControl.VerticalAlignment = global::Avalonia.Layout.VerticalAlignment.Stretch;
+            panel.Children.Add(immediateModePlotControl);
 
             overlays = new Canvas { Name = "Overlays" };
             panel.Children.Add(overlays);
@@ -495,26 +511,39 @@ namespace OxyPlot.Avalonia
 
             if (ActualModel != null)
             {
-                if (DisconnectCanvasWhileUpdating)
+                if (useImmediateModeRenderer)
                 {
-                    // TODO: profile... not sure if this makes any difference
-                    var idx = panel.Children.IndexOf(canvas);
-                    if (idx != -1)
-                    {
-                        panel.Children.RemoveAt(idx);
-                    }
+                    canvas.IsVisible = false;
+                    immediateModePlotControl.IsVisible = true;
 
-                    ((IPlotModel)ActualModel).Render(renderContext, canvas.Bounds.Width, canvas.Bounds.Height);
-
-                    // reinsert the canvas again
-                    if (idx != -1)
-                    {
-                        panel.Children.Insert(idx, canvas);
-                    }
+                    immediateModePlotControl.PlotModel = ActualModel;
+                    immediateModePlotControl.InvalidateVisual();
                 }
                 else
                 {
-                    ((IPlotModel)ActualModel).Render(renderContext, canvas.Bounds.Width, canvas.Bounds.Height);
+                    immediateModePlotControl.IsVisible = false;
+                    if (DisconnectCanvasWhileUpdating)
+                    {
+                        // TODO: profile... not sure if this makes any difference
+                        var idx = panel.Children.IndexOf(canvas);
+                        if (idx != -1)
+                        {
+                            panel.Children.RemoveAt(idx);
+                        }
+
+                        ((IPlotModel)ActualModel).Render(renderContext, canvas.Bounds.Width, canvas.Bounds.Height);
+
+                        // reinsert the canvas again
+                        if (idx != -1)
+                        {
+                            panel.Children.Insert(idx, canvas);
+                        }
+                    }
+                    else
+                    {
+                        ((IPlotModel)ActualModel).Render(renderContext, canvas.Bounds.Width, canvas.Bounds.Height);
+                    }
+                    canvas.IsVisible = true;
                 }
             }
         }
