@@ -52,6 +52,23 @@ namespace OxyPlot.Avalonia
             Context.DrawGeometry(brush, pen, geometry);
         }
 
+        public override void DrawImage(OxyImage source, double srcX, double srcY, double srcWidth, double srcHeight, double destX, double destY, double destWidth, double destHeight, double opacity, bool interpolate)
+        {
+            if (destWidth <= 0 || destHeight <= 0 || srcWidth <= 0 || srcHeight <= 0)
+            {
+                return;
+            }
+
+            var bitmapChain = GetImageSource(source);
+            var dest = new Rect(destX, destY, destWidth, destHeight);
+                var src = new Rect(srcX, srcY, srcWidth, srcHeight);
+            var interpolationMode = interpolate
+                ? global::Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.LowQuality
+                : global::Avalonia.Visuals.Media.Imaging.BitmapInterpolationMode.Default;
+
+            Context.DrawImage(bitmapChain, src, dest, interpolationMode);
+        }
+
         protected static Geometry ToPath(IList<ScreenPoint> points, bool closed)
         {
             var geometry = new PathGeometry();

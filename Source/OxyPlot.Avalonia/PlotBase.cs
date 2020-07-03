@@ -518,6 +518,7 @@ namespace OxyPlot.Avalonia
 
                     immediateModePlotControl.PlotModel = ActualModel;
                     immediateModePlotControl.InvalidateVisual();
+                    immediateModePlotControl.UpdateCount++;
                 }
                 else
                 {

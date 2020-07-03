@@ -21,20 +21,33 @@ namespace OxyPlot.Avalonia
             AvaloniaXamlLoader.Load(this);
         }
 
+        public int UpdateCount { get; set; } = 0;
+        public int RenderCount { get; set; } = 0;
+
         public override void Render(DrawingContext context)
         {
-            if (PlotModel != null)
+            PlotModel model = PlotModel;
+
+            if (model != null)
             {
-                this.Background = PlotModel.Background.ToBrush();
+                this.Background = model.Background.ToBrush();
             }
 
             base.Render(context);
 
-            if (PlotModel != null)
+            if (model == null)
             {
-                var rc = new ImmediateModeRenderContext(context);
-                ((IPlotModel)PlotModel).Render(rc, this.Bounds.Width, this.Bounds.Height);
+                return;
             }
+
+            RenderCount++;
+            var ft = new FormattedText();
+            ft.Text = $"{RenderCount} / {UpdateCount}";
+            ft.Typeface = new Typeface("{$Default}");
+            ft.FontSize = 12;
+            context.DrawText(OxyColors.Red.ToBrush(), new Point(0, 0), ft);
+            var rc = new ImmediateModeRenderContext(context);
+            ((IPlotModel)model).Render(rc, this.Bounds.Width, this.Bounds.Height);
         }
     }
 }
