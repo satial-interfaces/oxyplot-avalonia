@@ -272,13 +272,13 @@ namespace OxyPlot.Avalonia
         {
             if (oldValue is INotifyCollectionChanged collection)
             {
-                WeakSubscriptionManager.Unsubscribe(collection, "CollectionChanged", eventListener);
+                WeakEvents.CollectionChanged.Unsubscribe(collection, eventListener);
             }
 
             collection = newValue as INotifyCollectionChanged;
             if (collection != null)
             {
-                WeakSubscriptionManager.Subscribe(collection, "CollectionChanged", eventListener);
+                WeakEvents.CollectionChanged.Subscribe(collection, eventListener);
             }
         }
 
@@ -295,7 +295,7 @@ namespace OxyPlot.Avalonia
         /// <summary>
         /// Listens to and forwards any collection changed events
         /// </summary>
-        private class EventListener : IWeakSubscriber<NotifyCollectionChangedEventArgs>
+        private class EventListener : IWeakEventSubscriber<NotifyCollectionChangedEventArgs>
         {
             /// <summary>
             /// The delegate to forward to
@@ -311,7 +311,7 @@ namespace OxyPlot.Avalonia
                 this.onCollectionChanged = onCollectionChanged;
             }
 
-            public void OnEvent(object sender, NotifyCollectionChangedEventArgs e)
+            public void OnEvent(object sender, WeakEvent ev, NotifyCollectionChangedEventArgs e)
             {
                 onCollectionChanged(sender, e);
             }
