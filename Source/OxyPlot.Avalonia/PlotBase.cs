@@ -13,8 +13,10 @@ namespace OxyPlot.Avalonia
     using global::Avalonia.Controls;
     using global::Avalonia.Controls.Presenters;
     using global::Avalonia.Controls.Primitives;
+    using global::Avalonia.Controls.Shapes;
     using global::Avalonia.Input;
     using global::Avalonia.Input.Platform;
+    using global::Avalonia.Media;
     using global::Avalonia.Threading;
     using global::Avalonia.VisualTree;
     using System;
@@ -434,7 +436,7 @@ namespace OxyPlot.Avalonia
         /// <returns><c>true</c> if the specified element is currently visible to the user; otherwise, <c>false</c>.</returns>
         private static bool IsUserVisible(Control element)
         {
-            return element.IsEffectivelyVisible && element.TransformedBounds.HasValue;
+            return element.IsEffectivelyVisible; // && element.TransformedBounds.HasValue;
         }
 
         /// <summary>
