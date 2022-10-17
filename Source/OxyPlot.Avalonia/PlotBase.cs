@@ -436,7 +436,7 @@ namespace OxyPlot.Avalonia
         /// <returns><c>true</c> if the specified element is currently visible to the user; otherwise, <c>false</c>.</returns>
         private static bool IsUserVisible(Control element)
         {
-            return element.IsEffectivelyVisible; // && element.TransformedBounds.HasValue;
+            return element.IsEffectivelyVisible;
         }
 
         /// <summary>
